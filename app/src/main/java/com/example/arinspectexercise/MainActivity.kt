@@ -8,9 +8,11 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import com.example.arinspectexercise.annotation.OpenForTesting
 import com.example.arinspectexercise.model.network.Status
 import com.example.arinspectexercise.viewmodel.FactsViewModel
 
+@OpenForTesting
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: FactsViewModel
@@ -55,5 +57,9 @@ class MainActivity : AppCompatActivity() {
                 factsAdapter.setData(it.data?.rows)
             }
         })
+    }
+
+    fun setViewModelForTesting(factsViewModel: FactsViewModel) {
+        this.viewModel = factsViewModel
     }
 }

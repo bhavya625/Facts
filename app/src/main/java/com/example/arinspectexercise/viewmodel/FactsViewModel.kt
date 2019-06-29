@@ -5,8 +5,9 @@ import android.arch.lifecycle.*
 import com.example.arinspectexercise.model.Facts
 import com.example.arinspectexercise.model.network.Resource
 import com.example.arinspectexercise.repository.FactsRepository
+import com.example.arinspectexercise.annotation.OpenForTesting
 
-
+@OpenForTesting
 class FactsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: FactsRepository = FactsRepository(application)
