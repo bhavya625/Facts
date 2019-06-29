@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
-import com.example.arinspectexercise.model.Facts
+import com.example.arinspectexercise.model.network.Status
 import com.example.arinspectexercise.viewmodel.FactsViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -25,18 +25,19 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = factsAdapter
 
         viewModel = ViewModelProviders.of(this).get(FactsViewModel::class.java)
-        swipeRefreshLayout.setOnRefreshListener { viewModel.refresh() }
+        swipeRefreshLayout.setOnRefreshListener { viewModel.refresh(true) }
 
         fetchData()
     }
 
     private fun fetchData() {
         swipeRefreshLayout.isRefreshing = true
-        viewModel.getFacts().observe(this,
-            Observer<Facts> { factsModels ->
-                swipeRefreshLayout.isRefreshing = false
-                title = factsModels?.title
-                factsAdapter.setData(factsModels?.rows)
-            })
+        viewModel.getFacts().observe(this, Observer {
+            it?.let {
+                swipeRefreshLayout.isRefreshing = it.status == Status.LOADING
+                title = it.data?.title
+                factsAdapter.setData(it.data?.rows)
+            }
+        })
     }
 }
